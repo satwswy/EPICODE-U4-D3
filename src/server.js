@@ -1,0 +1,16 @@
+import express from "express"
+import blogPostsRouter from "./apis/blogs/index.js"
+import listEndpoints from "express-list-endpoints"
+
+const server = express()
+
+const port = 3002
+
+server.use(express.json())
+
+server.use("/blogPosts",blogPostsRouter )
+
+server.listen(port, ()=> {
+console.table(listEndpoints(server))
+console.log("Server is running on port:", port)
+})
