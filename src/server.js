@@ -6,7 +6,7 @@ import { badRequestHandler, genericServerErrorHandler, notFoundHandler, unauthor
 const server = express()
 
 const port = 3002
-
+server.use(cors())
 server.use(express.json())
 
 server.use("/blogPosts",blogPostsRouter )

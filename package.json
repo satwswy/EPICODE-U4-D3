@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/satwswy/EPICODE-U4-D3#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.1",
     "express-list-endpoints": "^6.0.0",
     "http-errors": "^2.0.0",
