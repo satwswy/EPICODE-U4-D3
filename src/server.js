@@ -1,22 +1,37 @@
-import express from "express"
-import blogPostsRouter from "./apis/blogs/index.js"
-import listEndpoints from "express-list-endpoints"
-import { badRequestHandler, genericServerErrorHandler, notFoundHandler, unauthorizedHandler } from "./errorHandlers.js"
+import express from "express";
 
-const server = express()
+import cors from "cors";
 
-const port = 3002
-server.use(cors())
-server.use(express.json())
+import listEndpoints from "express-list-endpoints";
 
-server.use("/blogPosts",blogPostsRouter )
+import authorsRouter from "./authors/index.js";
 
-server.use(badRequestHandler)
-server.use(unauthorizedHandler)
-server.use(notFoundHandler)
-server.use(genericServerErrorHandler)
+import blogsRouter from "./blogs/index.js";
 
-server.listen(port, ()=> {
-console.table(listEndpoints(server))
-console.log("Server is running on port:", port)
-})
+import { notFound, forbidden, catchAllErrorHandler } from "./errorHandlers.js";
+
+const server = express();
+
+const PORT = 3001;
+
+server.use(cors());
+
+server.use(express.json());
+
+server.use("/authors", authorsRouter);
+
+server.use("/blogs", blogsRouter);
+
+server.use(notFound);
+
+server.use(forbidden);
+
+server.use(catchAllErrorHandler);
+
+console.log(listEndpoints(server));
+
+server.listen(PORT, () => console.log("✅ Server is running on port : ", PORT));
+
+server.on("error", (error) =>
+  console.log(`❌ Server is not running due to : ${error}`)
+);
