@@ -1,26 +1,28 @@
-export const notFound = (err, req, res, next) => {
-  if (err && err.status === 400) {
-    res
-      .status(400)
-      .send({ message: err.message || "Not found!", errors: err.errors || [] });
+export const badRequestHandler = (err, req, res, next)=>{
+  if (err.status === 400) {
+      res.status(400).send({message: err.message})
+  } else {
+      next(err)
   }
-  next();
-};
+}
 
-export const forbidden = (err, req, res, next) => {
-  if (err && err.status === 403) {
-    res.status(403).send({ message: err.message || "Forbidden!" });
+export const unauthorizedHandler = (err, req, res, next) => {
+  if (err.status === 401) {
+    res.status(401).send({ message: err.message })
+  } else {
+    next(err)
   }
-  next();
-};
+}
 
-export const catchAllErrorHandler = (err, req, res, next) => {
-  if (err) {
-    if (!req.headersSent) {
-      res
-        .status(err.status || 500)
-        .send({ message: err.message || "Something went wrong!" });
-    }
+export const notFoundHandler = (err, req, res, next) => {
+  if (err.status === 404) {
+    res.status(404).send({ success: false, message: err.message })
+  } else {
+    next(err)
   }
-  next();
-};
+}
+
+export const genericServerErrorHandler = (err, req, res, next) => {
+  console.log("ERR: ", err)
+  res.status(500).send({ message: "An error occurred on our side! We gonna fix this ASAP!" })
+}
